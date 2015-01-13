@@ -1,6 +1,6 @@
 <?php
 
-namespace Foolz\Foolfuuka\Plugins\FormData\Model;
+namespace Foolz\Foolfuuka\Plugins\SpamGuard\Model;
 
 use Foolz\Inet\Inet;
 use Foolz\Foolframe\Model\Context;
@@ -8,7 +8,7 @@ use Foolz\Foolframe\Model\DoctrineConnection;
 use Foolz\Foolframe\Model\Model;
 use Symfony\Component\HttpFoundation\Request;
 
-class BoundaryValidator extends Model
+class Validator extends Model
 {
     /**
      * @var DoctrineConnection
@@ -70,7 +70,7 @@ class BoundaryValidator extends Model
     {
         $check = $this->dc->qb()
             ->select('1')
-            ->from($this->dc->p('plugin_fu_stopforumspam'), 'sfs')
+            ->from($this->dc->p('plugin_fu_spam_guard_sfs'), 'sfs')
             ->where('ip_addr_n = :ip_addr_n')
             ->setParameter(':ip_addr_n', $comment->poster_ip)
             ->execute()
