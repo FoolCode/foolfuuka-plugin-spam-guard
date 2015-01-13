@@ -1,0 +1,28 @@
+{
+  "name": "foolz/foolfuuka-plugin-spam-guard",
+  "type": "foolz-foolfuuka-plugin",
+  "description": "This plugin employs the usage of Akismet, StopForumSpam, and various other tools to help prevent spam.",
+  "version": "1.0.0",
+  "keywords": ["spam", "guard", "akismet", "stopforumspam"],
+  "homepage": "http://www.foolz.us",
+  "license": "Apache-2.0",
+  "authors": [
+    {
+      "name": "foolz",
+      "email": "support@foolz.us"
+    }
+  ],
+  "support": {
+    "email": "support@foolz.us",
+    "irc": "irc://irc.irchighway.net/fooldriver"
+  },
+  "require" : {
+    "foolz/plugin": "dev"
+  },
+  "extra": {
+    "name": "Spam Guard",
+    "slug": "spam_guard",
+    "identifier": "fu",
+    "module": "foolfuuka"
+  }
+}
