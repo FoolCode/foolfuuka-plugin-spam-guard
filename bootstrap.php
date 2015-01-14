@@ -7,7 +7,7 @@ class HHVM_SpamGuard
 {
     public function run()
     {
-        Event::forge('Foolz\Plugin\Plugin::execute.foolz/foolfuuka-plugin-spam-guard')
+        Event::forge('Foolz\Plugin\Plugin::execute#foolz/foolfuuka-plugin-spam-guard')
             ->setCall(function ($result) {
                 /* @var Context $context */
                 $context = $result->getParam('context');
@@ -25,13 +25,13 @@ class HHVM_SpamGuard
                     ->addArgument($context);
 
 
-                Event::forge('Foolz\Foolframe\Model\Context::handleConsole.add')
+                Event::forge('Foolz\Foolframe\Model\Context::handleConsole#obj.app')
                     ->setCall(function ($result) use ($context) {
                         $result->getParam('application')
                             ->add(new \Foolz\Foolfuuka\Plugins\SpamGuard\Console\Console($context));
                     });
 
-                Event::forge('Foolz\Foolframe\Model\Context.handleWeb.has_auth')
+                Event::forge('Foolz\Foolframe\Model\Context::handleWeb#obj.afterAuth')
                     ->setCall(function ($result) use ($context) {
                         // don't add the admin panels if the user is not an admin
                         if ($context->getService('auth')->hasAccess('maccess.admin')) {
@@ -48,7 +48,7 @@ class HHVM_SpamGuard
                                 )
                             );
 
-                            Event::forge('Foolz\Foolframe\Controller\Admin.before.sidebar.add')
+                            Event::forge('Foolz\Foolframe\Controller\Admin::before#var.sidebar')
                                 ->setCall(function ($result) {
                                     $sidebar = $result->getParam('sidebar');
                                     $sidebar[]['plugins'] = [
@@ -60,14 +60,14 @@ class HHVM_SpamGuard
                     });
 
                 if (!$context->getService('auth')->hasAccess('maccess.mod')) {
-                    Event::forge('Foolz\Foolfuuka\Model\CommentInsert::insert.call.before.sql')
+                    Event::forge('Foolz\Foolfuuka\Model\CommentInsert::insert#obj.comment')
                         ->setCall(function ($object) use ($context) {
                             $context->getService('foolfuuka-plugin.spam_guard_validator')->checkComment($object);
                         });
                 }
             });
 
-        Event::forge('Foolz\Foolframe\Model\Plugin::schemaUpdate.foolz/foolfuuka-plugin-spam-guard')
+        Event::forge('Foolz\Foolframe\Model\Plugin::install#foolz/foolfuuka-plugin-spam-guard')
             ->setCall(function ($result) {
                 /** @var Context $context */
                 $context = $result->getParam('context');
