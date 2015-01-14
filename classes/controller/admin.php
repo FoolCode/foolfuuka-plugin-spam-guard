@@ -52,6 +52,11 @@ class SpamGuard extends \Foolz\Foolframe\Controller\Admin
                 'type' => 'checkbox',
                 'help' => _i('Check the comment data against StopForumSpam.')
             ],
+            'foolfuuka.plugins.spam_guard.enable_spooky' => [
+                'preferences' => true,
+                'type' => 'checkbox',
+                'help' => _i('Enforce Captcha on first ghost post.')
+            ],
             'submit' => [
                 'type' => 'submit',
                 'class' => 'btn-primary',

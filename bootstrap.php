@@ -60,6 +60,11 @@ class HHVM_SpamGuard
                     });
 
                 if (!$context->getService('auth')->hasAccess('maccess.mod')) {
+                    Event::forge('Foolz\Foolfuuka\Model\CommentInsert::insert#obj.captcha')
+                        ->setCall(function ($object) use ($context) {
+                            $context->getService('foolfuuka-plugin.spam_guard_validator')->checkSpooky($object);
+                        });
+
                     Event::forge('Foolz\Foolfuuka\Model\CommentInsert::insert#obj.comment')
                         ->setCall(function ($object) use ($context) {
                             $context->getService('foolfuuka-plugin.spam_guard_validator')->checkComment($object);

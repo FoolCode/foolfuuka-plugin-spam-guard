@@ -42,6 +42,15 @@ class Validator extends Model
         }
     }
 
+    public function checkSpooky($object)
+    {
+        $comment = $object->getObject();
+
+        if ($this->preferences->get('foolfuuka.plugins.spam_guard.enable_spooky') && false === $comment->ghost_exist) {
+            throw new \Foolz\Foolfuuka\Model\CommentSendingRequestCaptchaException;
+        }
+    }
+
     public function processAkismet($request, $comment)
     {
         $connector = new \Riv\Service\Akismet\Connector\Curl();
