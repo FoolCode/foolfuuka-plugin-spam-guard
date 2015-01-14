@@ -33,21 +33,16 @@ class Validator extends Model
         $request = Request::createFromGlobals();
         $comment = $object->getObject();
 
+        if ($this->preferences->get('foolfuuka.plugins.spam_guard.enable_spooky') && false === $comment->ghost_exist) {
+            throw new \Foolz\Foolfuuka\Model\CommentSendingRequestCaptchaException;
+        }
+
         if ($this->preferences->get('foolfuuka.plugins.spam_guard.enable_stopforumspam')) {
             $this->processSFS($request, $comment->comment);
         }
 
         if ($this->preferences->get('foolfuuka.plugins.spam_guard.enable_akismet')) {
             $this->processAkismet($request, $comment->comment);
-        }
-    }
-
-    public function checkSpooky($object)
-    {
-        $comment = $object->getObject();
-
-        if ($this->preferences->get('foolfuuka.plugins.spam_guard.enable_spooky') && false === $comment->ghost_exist) {
-            throw new \Foolz\Foolfuuka\Model\CommentSendingRequestCaptchaException;
         }
     }
 
@@ -70,7 +65,7 @@ class Validator extends Model
             ];
 
             if ($akismet->check($data)) {
-                throw new \Foolz\Foolfuuka\Model\CommentSendingException('AKI: Unable to process comment.');
+                throw new \Foolz\Foolfuuka\Model\CommentSendingRequestCaptchaException;
             }
         }
     }
@@ -86,7 +81,7 @@ class Validator extends Model
             ->fetchAll();
 
         if (count($check) !== 0) {
-            throw new \Foolz\Foolfuuka\Model\CommentSendingException('SFS: Unable to process comment.');
+            throw new \Foolz\Foolfuuka\Model\CommentSendingRequestCaptchaException;
         }
     }
 }
