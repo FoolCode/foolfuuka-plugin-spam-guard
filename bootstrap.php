@@ -59,12 +59,12 @@ class HHVM_SpamGuard
                         }
                     });
 
-                if (!$context->getService('auth')->hasAccess('maccess.mod')) {
-                    Event::forge('Foolz\Foolfuuka\Model\CommentInsert::insert#obj.captcha')
-                        ->setCall(function ($object) use ($context) {
+                Event::forge('Foolz\Foolfuuka\Model\CommentInsert::insert#obj.captcha')
+                    ->setCall(function ($object) use ($context) {
+                        if (!$context->getService('auth')->hasAccess('maccess.mod')) {
                             $context->getService('foolfuuka-plugin.spam_guard_validator')->checkComment($object);
-                        });
-                }
+                        }
+                    });
             });
 
         Event::forge('Foolz\Foolframe\Model\Plugin::install#foolz/foolfuuka-plugin-spam-guard')
