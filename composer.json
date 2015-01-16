@@ -1,7 +1,7 @@
 {
   "name": "foolz/foolfuuka-plugin-spam-guard",
   "type": "foolz-foolfuuka-plugin",
-  "description": "This plugin employs the usage of Akismet, StopForumSpam, and various other tools to help prevent spam.",
+  "description": "Protects FoolFuuka installations from spam. It utilizes Akismet and StopForumSpam to minimize the amount of spam made on each board.",
   "version": "1.0.0",
   "keywords": ["spam", "guard", "akismet", "stopforumspam"],
   "homepage": "http://www.foolz.us",
