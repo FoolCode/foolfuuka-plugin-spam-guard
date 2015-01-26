@@ -1,11 +1,11 @@
 <?php
 
-namespace Foolz\Foolfuuka\Plugins\SpamGuard\Model;
+namespace Foolz\FoolFuuka\Plugins\SpamGuard\Model;
 
 use Foolz\Inet\Inet;
-use Foolz\Foolframe\Model\Context;
-use Foolz\Foolframe\Model\DoctrineConnection;
-use Foolz\Foolframe\Model\Model;
+use Foolz\FoolFrame\Model\Context;
+use Foolz\FoolFrame\Model\DoctrineConnection;
+use Foolz\FoolFrame\Model\Model;
 use Symfony\Component\HttpFoundation\Request;
 
 class Validator extends Model
@@ -34,7 +34,7 @@ class Validator extends Model
         $comment = $object->getObject();
 
         if ($this->preferences->get('foolfuuka.plugins.spam_guard.enable_spooky') && false === $comment->ghost_exist) {
-            throw new \Foolz\Foolfuuka\Model\CommentSendingRequestCaptchaException;
+            throw new \Foolz\FoolFuuka\Model\CommentSendingRequestCaptchaException;
         }
 
         if ($this->preferences->get('foolfuuka.plugins.spam_guard.enable_stopforumspam')) {
@@ -65,7 +65,7 @@ class Validator extends Model
             ];
 
             if ($akismet->check($data)) {
-                throw new \Foolz\Foolfuuka\Model\CommentSendingRequestCaptchaException;
+                throw new \Foolz\FoolFuuka\Model\CommentSendingRequestCaptchaException;
             }
         }
     }
@@ -81,7 +81,7 @@ class Validator extends Model
             ->fetchAll();
 
         if (count($check) !== 0) {
-            throw new \Foolz\Foolfuuka\Model\CommentSendingRequestCaptchaException;
+            throw new \Foolz\FoolFuuka\Model\CommentSendingRequestCaptchaException;
         }
     }
 }

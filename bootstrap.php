@@ -1,6 +1,6 @@
 <?php
 
-use Foolz\Foolframe\Model\Context;
+use Foolz\FoolFrame\Model\Context;
 use Foolz\Plugin\Event;
 
 class HHVM_SpamGuard
@@ -15,20 +15,20 @@ class HHVM_SpamGuard
                 /** @var Autoloader $autoloader */
                 $autoloader = $context->getService('autoloader');
                 $autoloader->addClassMap([
-                    'Foolz\Foolframe\Controller\Admin\Plugins\SpamGuard' => __DIR__.'/classes/controller/admin.php',
-                    'Foolz\Foolfuuka\Plugins\SpamGuard\Console\Console' => __DIR__ . '/classes/console/console.php',
-                    'Foolz\Foolfuuka\Plugins\SpamGuard\Model\Validator' => __DIR__.'/classes/model/validator.php'
+                    'Foolz\FoolFrame\Controller\Admin\Plugins\SpamGuard' => __DIR__.'/classes/controller/admin.php',
+                    'Foolz\FoolFuuka\Plugins\SpamGuard\Console\Console' => __DIR__ . '/classes/console/console.php',
+                    'Foolz\FoolFuuka\Plugins\SpamGuard\Model\Validator' => __DIR__.'/classes/model/validator.php'
                 ]);
 
                 $context->getContainer()
-                    ->register('foolfuuka-plugin.spam_guard_validator', 'Foolz\Foolfuuka\Plugins\SpamGuard\Model\Validator')
+                    ->register('foolfuuka-plugin.spam_guard_validator', 'Foolz\FoolFuuka\Plugins\SpamGuard\Model\Validator')
                     ->addArgument($context);
 
 
                 Event::forge('Foolz\FoolFrame\Model\Context::handleConsole#obj.app')
                     ->setCall(function ($result) use ($context) {
                         $result->getParam('application')
-                            ->add(new \Foolz\Foolfuuka\Plugins\SpamGuard\Console\Console($context));
+                            ->add(new \Foolz\FoolFuuka\Plugins\SpamGuard\Console\Console($context));
                     });
 
                 Event::forge('Foolz\FoolFrame\Model\Context::handleWeb#obj.afterAuth')
@@ -40,7 +40,7 @@ class HHVM_SpamGuard
                                     '/admin/plugins/spam_guard/{_suffix}',
                                     [
                                         '_suffix' => 'manage',
-                                        '_controller' => 'Foolz\Foolframe\Controller\Admin\Plugins\SpamGuard::manage'
+                                        '_controller' => 'Foolz\FoolFrame\Controller\Admin\Plugins\SpamGuard::manage'
                                     ],
                                     [
                                         '_suffix' => '.*'

@@ -1,10 +1,10 @@
 <?php
 
-namespace Foolz\Foolfuuka\Plugins\SpamGuard\Console;
+namespace Foolz\FoolFuuka\Plugins\SpamGuard\Console;
 
 use Foolz\Inet\Inet;
-use Foolz\Foolframe\Model\Context;
-use Foolz\Foolframe\Model\DoctrineConnection;
+use Foolz\FoolFrame\Model\Context;
+use Foolz\FoolFrame\Model\DoctrineConnection;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
