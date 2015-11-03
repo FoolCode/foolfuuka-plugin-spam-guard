@@ -33,6 +33,8 @@ class Validator extends Model
         $request = Request::createFromGlobals();
         $comment = $object->getObject();
 
+        $this->processCIDR($request, $comment->comment);
+
         if ($this->preferences->get('foolfuuka.plugins.spam_guard.enable_spooky') && false === $comment->ghost_exist) {
             throw new \Foolz\FoolFuuka\Model\CommentSendingRequestCaptchaException;
         }
@@ -70,6 +72,19 @@ class Validator extends Model
         }
     }
 
+    public function processCIDR($request, $comment)
+    {
+        if (preg_match('/^(([1-9]?[0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]).){3}([1-9]?[0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/', $comment->poster_ip)) {
+            $range = [];
+
+            foreach ($range as $cidr) {
+                if ($this->isMatchCIDR(Inet::dtop($comment->poster_ip), $cidr)) {
+                    throw new \Foolz\Foolfuuka\Model\CommentSendingBannedException('We were unable to process your comment at this time.');
+                }
+            }
+        }
+    }
+
     public function processSFS($request, $comment)
     {
         $check = $this->dc->qb()
@@ -83,5 +98,18 @@ class Validator extends Model
         if (count($check) !== 0) {
             throw new \Foolz\FoolFuuka\Model\CommentSendingRequestCaptchaException;
         }
+    }
+
+    public function isMatchCIDR($ip, $range)
+    {
+        list($subnet, $bits) = explode('/', $range);
+
+        $ip = ip2long($ip);
+        $netmask = -1 << (32 - $bits);
+
+        $subnet = ip2long($subnet);
+        $subnet &= $netmask;
+
+        return ($ip & $netmask) == $subnet;
     }
 }
